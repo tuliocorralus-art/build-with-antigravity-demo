@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Schedule New Session | OmniEvent{% endblock %}
+
+{% block content %}
+<section class="form-section">
+    <div class="form-container">
+        <div class="form-glow"></div>
+        <div class="form-header">
+            <a href="{{ url_for('index') }}" class="back-link">← Back to Dashboard</a>
+            <h1 class="form-title">Schedule <span class="gradient-text">New Session</span></h1>
+            <p class="form-subtitle">Fill out the detailed event metadata to broadcast and schedule your conference session instantly.</p>
+        </div>
+
+        <form action="{{ url_for('add_event') }}" method="POST" class="interactive-form" id="create-event-form">
+            <div class="form-grid">
+                <!-- Title Field -->
+                <div class="form-group full-width">
+                    <label for="title" class="form-label">Session Title</label>
+                    <input type="text" id="title" name="title" class="form-control" placeholder="e.g. Advanced Agentic Architectures" required>
+                    <span class="field-hint">Provide a concise, captivating title for the event.</span>
+                </div>
+
+                <!-- Speaker Field -->
+                <div class="form-group">
+                    <label for="speaker" class="form-label">Speaker / Panelist Name</label>
+                    <input type="text" id="speaker" name="speaker" class="form-control" placeholder="e.g. Dr. Angela Chen" required>
+                    <span class="field-hint">Specify primary host or panel list.</span>
+                </div>
+
+                <!-- Category Field -->
+                <div class="form-group">
+                    <label for="category" class="form-label">Track / Category</label>
+                    <select id="category" name="category" class="form-control" required>
+                        <option value="" disabled selected>Select Category</option>
+                        <option value="Keynote">Keynote</option>
+                        <option value="Technical">Technical Talk</option>
+                        <option value="Workshop">Workshop</option>
+                        <option value="Panel">Panel Discussion</option>
+                        <option value="Networking">Networking Event</option>
+                    </select>
+                    <span class="field-hint">Helps attendees filter by session type.</span>
+                </div>
+
+                <!-- Start Time Field -->
+                <div class="form-group">
+                    <label for="start_time" class="form-label">Start Date & Time</label>
+                    <input type="datetime-local" id="start_time" name="start_time" class="form-control" required>
+                    <span class="field-hint">When the session begins.</span>
+                </div>
+
+                <!-- End Time Field -->
+                <div class="form-group">
+                    <label for="end_time" class="form-label">End Date & Time</label>
+                    <input type="datetime-local" id="end_time" name="end_time" class="form-control" required>
+                    <span class="field-hint">When the session concludes.</span>
+                </div>
+
+                <!-- Location Field -->
+                <div class="form-group full-width">
+                    <label for="location" class="form-label">Location / Room Venue</label>
+                    <input type="text" id="location" name="location" class="form-control" placeholder="e.g. Grand Ballroom A, Workshop Room 102" required>
+                    <span class="field-hint">Physical room, hall, or virtual streaming link.</span>
+                </div>
+
+                <!-- Description Field -->
+                <div class="form-group full-width">
+                    <label for="description" class="form-label">Session Description</label>
+                    <textarea id="description" name="description" class="form-control text-area" rows="4" placeholder="Briefly describe what attendees will learn, key prerequisites, and session goals..." required></textarea>
+                    <span class="field-hint">Comprehensive summary of your scheduled event.</span>
+                </div>
+            </div>
+
+            <!-- Client-side error banner -->
+            <div class="form-error-banner" id="form-validation-error" style="display: none;">
+                <span class="error-icon">⚠️</span>
+                <span class="error-msg" id="error-message-text"></span>
+            </div>
+
+            <div class="form-actions">
+                <button type="reset" class="btn btn-secondary" id="reset-btn">Reset Form</button>
+                <button type="submit" class="btn btn-primary" id="submit-btn">Schedule Event</button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

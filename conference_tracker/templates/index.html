@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | OmniEvent Conference Tracker{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+        <span class="hero-badge">SUMMIT 2026</span>
+        <h1 class="hero-title">Elevate Your <span class="gradient-text">Conference Journey</span></h1>
+        <p class="hero-subtitle">Track premier keynotes, hands-on workshops, technical sessions, and thought leadership panels in real-time.</p>
+        <div class="hero-actions">
+            <a href="{{ url_for('add_event') }}" class="btn btn-primary" id="hero-add-event-btn">
+                <span class="btn-icon">+</span> Schedule New Session
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Advanced Interactive Filter Dashboard -->
+<section class="controls-section">
+    <div class="controls-card">
+        <!-- Search bar -->
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="search-input" placeholder="Search sessions, speakers, locations..." aria-label="Search events">
+        </div>
+        
+        <!-- Category Pill Filters -->
+        <div class="filter-group">
+            <span class="filter-label">Filter by Track:</span>
+            <div class="filter-chips">
+                <button class="chip active" data-category="all" id="filter-all">All Tracks</button>
+                {% for category in categories %}
+                    <button class="chip" data-category="{{ category }}" id="filter-{{ category | lower }}">{{ category }}</button>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sessions Display Grid -->
+<section class="sessions-section">
+    <div class="sessions-header">
+        <h2 class="section-title">Scheduled Sessions</h2>
+        <span class="session-count" id="session-count-badge">{{ events | length }} Active Sessions</span>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" id="empty-state-view" style="display: none;">
+        <div class="empty-icon">✧</div>
+        <h3>No Sessions Found</h3>
+        <p>We couldn't find any conference events matching your search or filter. Try a different query or schedule a new event.</p>
+        <button class="btn btn-secondary" onclick="clearFilters()" id="clear-filters-btn">Clear All Filters</button>
+    </div>
+
+    <div class="sessions-grid" id="events-grid">
+        {% for event in events %}
+            <article class="event-card" data-category="{{ event.category }}" data-title="{{ event.title | lower }}" data-speaker="{{ event.speaker | lower }}" data-location="{{ event.location | lower }}" data-description="{{ event.description | lower }}">
+                <div class="card-glow"></div>
+                <div class="card-header">
+                    <span class="category-badge badge-{{ event.category | lower }}">{{ event.category }}</span>
+                    <div class="event-time">
+                        <span class="time-icon">🕒</span>
+                        <time datetime="{{ event.start_time.isoformat() }}">
+                            {{ event.start_time.strftime('%b %d, %H:%M') }} - {{ event.end_time.strftime('%H:%M') }}
+                        </time>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <h3 class="event-title">{{ event.title }}</h3>
+                    <p class="event-description">{{ event.description }}</p>
+                </div>
+
+                <div class="card-footer">
+                    <div class="info-row">
+                        <div class="info-item">
+                            <span class="info-icon">🎙️</span>
+                            <span class="info-text">{{ event.speaker }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-icon">📍</span>
+                            <span class="info-text">{{ event.location }}</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
